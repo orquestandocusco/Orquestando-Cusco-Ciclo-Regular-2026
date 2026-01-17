@@ -18,16 +18,12 @@ body {
 .header {
   display: flex;
   align-items: center;
-  justify-content: center; /* Centrar los logos */
-  gap: 20px; /* Separación entre logos */
+  justify-content: center; /* Centrar el logo derecho */
+  gap: 20px; /* Separación si hubiera más logos */
   margin: 20px 0;
 }
 
 /* ===== LOGOS ===== */
-.logo-izq {
-  height: 80px;
-}
-
 .logo-der {
   height: 240px; /* triple tamaño del original */
 }
@@ -92,9 +88,8 @@ a:hover {
 
 <body>
 
-<!-- ENCABEZADO CON LOGOS -->
+<!-- ENCABEZADO CON LOGO DERECHO -->
 <div class="header">
-  <img src="logo_izquierdo.png" alt="Logo izquierdo" class="logo-izq">
   <img src="logo_derecho.png" alt="Logo derecho" class="logo-der">
 </div>
 
