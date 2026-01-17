@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ciclo Vacacional Orquestando 2026</title>
+
+<style>
+/* ===== FONDO ===== */
+body {
+  font-family: Arial, sans-serif;
+  background: url('fondo-orquestando.jpg') no-repeat center center fixed;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== CONTENEDOR DEL ENCABEZADO ===== */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrar los logos */
+  gap: 20px; /* Separación entre logos */
+  margin: 20px 0;
+}
+
+/* ===== LOGOS ===== */
+.logo-izq {
+  height: 80px;
+}
+
+.logo-der {
+  height: 240px; /* triple tamaño del original */
+}
+
+/* ===== TITULOS ===== */
+.titulos {
+  text-align: center;
+}
+
+h1 {
+  font-size: 36px;
+  margin: 0;
+  color: #fff; /* blanco para contrastar con el fondo */
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+}
+
+h2 {
+  margin: 5px 0 0 0;
+  font-size: 20px;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
+
+/* ===== BUSCADOR ===== */
+#buscador {
+  width: 100%;
+  padding: 10px;
+  margin: 20px 0;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* ===== TABLA ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: rgba(255,255,255,0.9); /* fondo semi-transparente para destacar sobre la imagen */
+  margin-bottom: 50px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background: #f2f2f2;
+}
+
+a {
+  color: #0077cc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ENCABEZADO CON LOGOS -->
+<div class="header">
+  <img src="logo_izquierdo.png" alt="Logo izquierdo" class="logo-izq">
+  <img src="logo_derecho.png" alt="Logo derecho" class="logo-der">
+</div>
+
+<!-- TITULOS -->
+<div class="titulos">
+  <h1>CICLO VACACIONAL ORQUESTANDO 2026</h1>
+  <h2>Buscador de Estudiantes</h2>
+</div>
+
+<!-- BUSCADOR -->
+<input type="text" id="buscador" placeholder="Buscar por DNI, nombre o apellido...">
+
+<!-- TABLA -->
+<table>
+  <thead>
+    <tr>
+      <th>DNI</th>
+      <th>Nombres</th>
+      <th>Apellidos</th>
+      <th>Horario</th>
+      <th>Educador Musical</th>
+      <th>Grupo</th>
+      <th>WhatsApp</th>
+    </tr>
+  </thead>
+  <tbody id="tabla"></tbody>
+</table>
+
+<!-- SCRIPT PARA BUSCADOR -->
+<script>
+let estudiantes = [];
+
+fetch("datos.csv")
+  .then(res => res.text())
+  .then(texto => {
+    const lineas = texto.trim().split("\n");
+    const encabezados = lineas[0].split(",");
+
+    for (let i = 1; i < lineas.length; i++) {
+      const valores = lineas[i].split(",");
+      let obj = {};
+      encabezados.forEach((h, j) => obj[h.trim()] = valores[j]?.trim());
+      estudiantes.push(obj);
+    }
+
+    render(estudiantes);
+  });
+
+function render(lista) {
+  const tabla = document.getElementById("tabla");
+  tabla.innerHTML = "";
+
+  lista.forEach(e => {
+    const link = e["Link de Grupo Whatsapp"]
+      ? `<a href="${e["Link de Grupo Whatsapp"]}" target="_blank">Abrir</a>`
+      : "No disponible";
+
+    tabla.innerHTML += `
+      <tr>
+        <td>${e["DNI"]}</td>
+        <td>${e["Nombres del estudiante"]}</td>
+        <td>${e["Apellidos del estudiante"]}</td>
+        <td>${e["HORARIO"]}</td>
+        <td>${e["EDUCADOR MUSICAL"]}</td>
+        <td>${e["GRUPO"]}</td>
+        <td>${link}</td>
+      </tr>`;
+  });
+}
+
+document.getElementById("buscador").addEventListener("input", e => {
+  const t = e.target.value.toLowerCase();
+  render(estudiantes.filter(est =>
+    Object.values(est).join(" ").toLowerCase().includes(t)
+  ));
+});
+</script>
+
+</body>
+</html>
