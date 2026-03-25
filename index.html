@@ -122,7 +122,9 @@ a:hover {
 <script>
 let estudiantes = [];
 
-fetch("datos.csv")
+fetch("datos.csv?v=" + new Date().getTime(), {
+  cache: "no-store"
+})
   .then(res => res.text())
   .then(texto => {
     const lineas = texto.trim().split("\n");
